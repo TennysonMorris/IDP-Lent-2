@@ -18,12 +18,29 @@
 # Ground....................................[]              []-------------------------------Ground
 # Pin 14 GPIO...............................[]              []-------------------------------Pin 17 GPIO
 # Pin 15 GPIO...............................[]              []-------------------------------Pin 16 GPIO
-from machine import Pin
+from machine import Pin, PWM
 from time import sleep
 
 class Wheel:
     
-    __init__():
-        self.pwm = PWM(Pin(0))
-        self.dir = Pin(1, Pin.OUT)
+    __init__(self, pwrPin, dirPin):
+        self.pwm = PWM(Pin(pwrPin))
+        self.dir = Pin(dirPin, Pin.OUT)
+        self.pwm.freq(1000)
+        self.pwm.duty_u16(0)
+        
+    def kill(self):
+        self.pwm.duty_u16(0)
+        
+    def fwd(self):
+        self.dir.value(0)
+        self.pwm.duty_u16(65535 * 70/100)
+        
+    def rvrs(self):
+        self.dir.value(1)
+        self.pwm.duty_u16(65535 * 30/100)
+        
+    
+leftWheel = Wheel(0,1)
+rightWheel = Wheel(2,3)
         
