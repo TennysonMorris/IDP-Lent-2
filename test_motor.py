@@ -23,7 +23,7 @@ from time import sleep
 
 class Motor:
     
-    __init__(self, pwrPin, dirPin):
+    def __init__(self, pwrPin, dirPin):
         self.pwm = PWM(Pin(pwrPin))
         self.dir = Pin(dirPin, Pin.OUT)
         self.pwm.freq(1000) # Set max frequency
@@ -36,13 +36,22 @@ class Motor:
     # Drive the motor forwards
     def fwd(self):
         self.dir.value(0)
-        self.pwm.duty_u16(65535 * 70/100) # Motor speed given as x/100, here x = 70
+        self.pwm.duty_u16(int(65535 * 100/100)) # Motor speed given as x/100, here x = 70
         
     # Drive the motor in reverse
     def rvrs(self):
         self.dir.value(1)
-        self.pwm.duty_u16(65535 * 30/100)
+        self.pwm.duty_u16(int(65535 * 100/100))
         
-leftWheel = Motor(0,1)
-rightWheel = Motor(2,3)
+leftWheel = Motor(5,4)
+rightWheel = Motor(6,7)
         
+        
+leftWheel.fwd()
+rightWheel.rvrs()
+sleep(1)
+leftWheel.rvrs()
+rightWheel.fwd()
+sleep(1)
+leftWheel.kill()
+rightWheel.kill()
