@@ -21,37 +21,12 @@
 from machine import Pin, PWM
 from time import sleep
 
-class Motor:
-    
-    def __init__(self, pwrPin, dirPin):
-        self.pwm = PWM(Pin(pwrPin))
-        self.dir = Pin(dirPin, Pin.OUT)
-        self.pwm.freq(1000) # Set max frequency
-        self.pwm.duty_u16(0) # Set motor's duty cycle
-        
-    # Turn off the motor
-    def kill(self):
-        self.pwm.duty_u16(0) 
-        
-    # Drive the motor forwards
-    def fwd(self):
-        self.dir.value(0)
-        self.pwm.duty_u16(int(65535 * 100/100)) # Motor speed given as x/100, here x = 70
-        
-    # Drive the motor in reverse
-    def rvrs(self):
-        self.dir.value(1)
-        self.pwm.duty_u16(int(65535 * 100/100))
-        
-leftWheel = Motor(5,4)
-rightWheel = Motor(6,7)
-        
-        
-leftWheel.fwd()
-rightWheel.rvrs()
-sleep(2)
-leftWheel.rvrs()
-rightWheel.fwd()
-sleep(2)
-leftWheel.kill()
-rightWheel.kill()
+#Set pins for LED and line sensor (adjustable).
+led = Pin(14, Pin.OUT)
+lineSensor = Pin(12, Pin.IN, Pin.PULL_UP)
+
+#Loop to match line sensor and led value to test operational distance.
+while True:
+    led.value(lineSensor(Value))
+
+
