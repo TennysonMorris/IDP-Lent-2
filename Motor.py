@@ -20,16 +20,25 @@
 # Pin 15 GPIO...............................[]              []-------------------------------Pin 16 GPIO
 from machine import Pin, PWM
 from time import sleep
-from Motor import Motor
-        
-leftWheel = Motor(6,7)
-rightWheel = Motor(5,4)
 
-leftWheel.fwd(100)
-rightWheel.fwd(100)
-sleep(2)
-leftWheel.rvrs(100)
-rightWheel.rvrs(100)
-sleep(2)
-leftWheel.kill()
-rightWheel.kill()
+class Motor:
+    
+    def __init__(self, pwrPin, dirPin):
+        self.pwm = PWM(Pin(pwrPin))
+        self.dir = Pin(dirPin, Pin.OUT)
+        self.pwm.freq(1000) # Set max frequency
+        self.pwm.duty_u16(0) # Set motor's duty cycle
+        
+    # Turn off the motor
+    def kill(self):
+        self.pwm.duty_u16(0) 
+        
+    # Drive the motor forwards
+    def fwd(self, speed):
+        self.dir.value(0)
+        self.pwm.duty_u16(int(65535 * speed/100)) # Motor speed given as x/100, here x = 70
+        
+    # Drive the motor in reverse
+    def rvrs(self, speed):
+        self.dir.value(1)
+        self.pwm.duty_u16(int(65535 * speed/100))

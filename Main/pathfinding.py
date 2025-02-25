@@ -37,15 +37,15 @@ def moves(node):
 ##shortest paths between key points
 paths = {
     #start to pickup points
-    0 : {3 : [1,2,3], 10 : [1,2,4,6,11,9,10], 15 : [1,18,17,16,14,15], 13 : [1,18,17,12,13]},
+    0 : {3 : [0,1,2,3], 10 : [0,1,2,4,6,11,9,10], 15 : [0,1,18,17,16,14,15], 13 : [0, 1,18,17,12,13]},
     #depots to pickup points and start
-    5 : {3 : [4,2,3], 10 : [4,6,11,9,10], 15 : [4,2,1,18,17,16,14,15], 13 : [4,2,1,18,17,12,13], 0 : [4,2,1,0]},
-    19 : {3 : [18,1,2,3], 10 : [18,17,12,11,9,10], 15 : [18,17,16,14,15], 13 : [18,17,12,13], 0 :[18,1,0]},
+    5 : {3 : [5,4,2,3], 10 : [5,4,6,11,9,10], 15 : [5,4,2,1,18,17,16,14,15], 13 : [5,4,2,1,18,17,12,13], 0 : [5,4,2,1,0]},
+    19 : {3 : [19,18,1,2,3], 10 : [19,18,17,12,11,9,10], 15 : [19,18,17,16,14,15], 13 : [19,18,17,12,13], 0 :[19,18,1,0]},
     #pick up points to depot
-    3 : {5 : [2,4,5], 19: [2,1,18,19]},
-    10 : {5 : [9,8,7,6,4,5], 19: [9,8,14,16,17,18,19]},
-    15 : {5 : [14,8,7,6,4,5], 19: [14,8,9,11,12,17,18,19]},
-    13 : {5 : [12,11,6,4,5], 19: [12,11,9,8,14,16,17,18,19]}
+    3 : {5 : [3,2,4,5], 19: [3,2,1,18,19]},
+    10 : {5 : [10,9,8,7,6,4,5], 19: [10,9,8,14,16,17,18,19]},
+    15 : {5 : [15,14,8,7,6,4,5], 19: [15,14,8,9,11,12,17,18,19]},
+    13 : {5 : [13,12,11,6,4,5], 19: [13,12,11,9,8,14,16,17,18,19]}
 }
 
 def turn_direction(current_direction, current_path, current_node):
@@ -61,3 +61,23 @@ def turn_direction(current_direction, current_path, current_node):
     
     ##return turn direction
     return turn_logic[current_direction][next_direction]
+
+def line_follower():
+    #Veer controlled by slowing down the wheel on the outside of the veer.
+    if leftLineFollower.value() == 1:
+        rightWheel.fwd(50)
+    if rightLineFollower.value() == 1:
+        leftWheel.fwd(50)
+
+def update_junction(current_direction, current_path, current_node):
+    
+    current_node = map[current_node][current_direction]
+    return current_node
+
+def detect_junction():
+    if leftJuncDetector.value() == 1 or rightJuncDetector.value() == 1:
+        update_junction(current_direction, current_path, current_node)
+        
+    
+    
+    
