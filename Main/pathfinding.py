@@ -60,7 +60,7 @@ def turn_direction(current_direction, current_path, current_node):
             break
     
     ##return turn direction
-    return turn_logic[current_direction][next_direction]
+    return next_direction, turn_logic[current_direction][next_direction]
 
     
     
