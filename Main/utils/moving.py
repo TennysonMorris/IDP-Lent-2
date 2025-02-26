@@ -1,11 +1,18 @@
 import pathfinding as pf
 
-def line_follower():
+def line_follower(lineSensorLeft, lineSensorRight):
     #Veer controlled by slowing down the wheel on the outside of the veer.
-    if leftLineFollower.value() == 1:
-        rightWheel.fwd(50)
-    if rightLineFollower.value() == 1:
-        leftWheel.fwd(50)
+    if lineSensorLeft.value() == 0:
+        rightSpeed = 50
+    else:
+        rightSpeed = 100
+        
+    if lineSensorRight.value() == 0:
+        leftSpeed = 50
+    else:
+        leftSpeed = 100
+        
+    return (leftSpeed, rightSpeed)
 
 def update_junction(current_direction, current_path, current_node):
     #update current node 
@@ -27,6 +34,6 @@ def detect_junction():
 
 def turn(direction):
     ## todo
-
-
     
+    
+    return
