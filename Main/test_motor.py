@@ -21,7 +21,7 @@
 from machine import Pin, PWM
 from time import sleep
 from Motor import Motor
-        
+
 leftWheel = Motor(6,7)
 rightWheel = Motor(5,4)
 

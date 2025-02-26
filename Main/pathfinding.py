@@ -69,15 +69,16 @@ def line_follower():
     if rightLineFollower.value() == 1:
         leftWheel.fwd(50)
 
-def update_junction(current_direction, current_path, current_node):
-    
-    current_node = map[current_node][current_direction]
-    return current_node
+def update_junction(direction, path, node):
+    #Update the current node based on the path the robot is on and the direction it's travelling.
+    current_node = map[node][direction]
 
 def detect_junction():
+    #Use line sensors to detect if a junction has been reached.
     if leftJuncDetector.value() == 1 or rightJuncDetector.value() == 1:
         update_junction(current_direction, current_path, current_node)
         
+
     
     
     
