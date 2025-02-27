@@ -32,11 +32,11 @@ def detect_junction(leftJuncDetector, rightJuncDetector):
 def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
 
     #turn off original line
-    while leftLineFollower.value() == 0 and rightLineFollower.value() == 0:
+    while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
     #turn until new line reached
-    while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
+    while leftLineFollower.value() == 0 or rightLineFollower.value() == 0:
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
             
