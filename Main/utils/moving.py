@@ -14,42 +14,32 @@ def line_follower(lineSensorLeft, lineSensorRight):
         
     return (leftSpeed, rightSpeed)
 
-def detect_junction():
+def detect_junction(leftJuncDetector, rightJuncDetector):
     #if junction detected
     if leftJuncDetector.value() == 1 or rightJuncDetector.value() == 1:
-
+        
+        global current_direction, current_path, current_node
         #update current node
         current_node +=1
         #update current and turn direction
         current_direction, turning  = pf.turn_direction(current_direction, current_path, current_node)
 
         #execute turn 
-        if turning != "Straight":
-            turn(turning)
+        return True, turning
+        
+    return False, "Straight"
 
-def turn(direction):
-    ## todo
+def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
 
-    if direction == "Left":
-        #turn off original line
-        while leftLineFollower.value() == 0 and rightLineFollower.value() == 0:
-            rightWheel.fwd(50)
-            leftWheel.rvrs(50)
-        #turn until new line reached
-        while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
-            rightWheel.fwd(50)
-            leftWheel.rvrs(50)
-
-    if direction == "right":
-        #turn off original line
-        while leftLineFollower.value() == 0 and rightLineFollower.value() == 0:
-            rightWheel.rvrs(50)
-            leftWheel.fwd(50)
-        #turn until new line reached
-        while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
-            rightWheel.rvrs(50)
-            leftWheel.fwd(50)
-
-        #reactivate line follower
+    #turn off original line
+    while leftLineFollower.value() == 0 and rightLineFollower.value() == 0:
+        outsideWheel.fwd(50)
+        insideWheel.rvrs(50)
+    #turn until new line reached
+    while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
+        outsideWheel.fwd(50)
+        insideWheel.rvrs(50)
+            
+    return
 
 
