@@ -17,11 +17,14 @@ juncSensorLeft = Pin(, Pin.IN, Pin,PULL_UP)
 #Set pin for the button (used to initiate the code)
 button = Pin(18, Pin.IN, Pin.PULL_DOWN)
 
+current_node = 0
+current_path = []
+current_direction = "N"
+
 while True:
     
     #Find direction to turn towards.
-    turnDirection = pf.turn_direction(current_direction, current_path, current_node)
-    
+        
     #Check whether it is necessary to turn
     if mv.detect_junction(juncSensorLeft, juncSensorRight)[0] is True:
         turnDirection = mv.detect_junction[1]

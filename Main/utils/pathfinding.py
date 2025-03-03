@@ -48,6 +48,11 @@ paths = {
     13 : {5 : [13,12,11,6,4,5], 19: [13,12,11,9,8,14,16,17,18,19]}
 }
 
+def set_path(destination):
+    global current_node
+    return paths[current_node][destination]
+    
+
 def turn_direction(current_direction, current_path, current_node):
     
     ##get available moves
