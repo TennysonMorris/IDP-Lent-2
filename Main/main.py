@@ -17,8 +17,9 @@ juncSensorLeft = Pin(, Pin.IN, Pin,PULL_UP)
 #Set pin for the button (used to initiate the code)
 button = Pin(18, Pin.IN, Pin.PULL_DOWN)
 
+#initialize initial node, path, direction
 current_node = 0
-current_path = []
+current_path = [] #hard coded to first pickup
 current_direction = "N"
 
 while True:
