@@ -55,19 +55,17 @@ def set_path(destination):
 
 def turn_direction(current_direction, current_path, current_node):
     
-    global current_direction
-
     ##get available moves
     moves = moves(current_path[current_node])
 
     ##based on next node, find direction needed
     for i in moves:
         if moves[i] == current_path[current_node + 1]:
-            current_direction = i
+            next_direction = i
             break
     
     ##return turn direction
-    return turn_logic[current_direction][current_direction]
+    return next_direction, turn_logic[current_direction][next_direction]
 
     
     
