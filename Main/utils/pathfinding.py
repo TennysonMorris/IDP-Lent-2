@@ -1,4 +1,6 @@
 ## create map as dictionary
+import settings as foo
+
 map = {
     0 : {"N" : 1},
     1 : {"W" : 2, "E" : 18},
@@ -48,25 +50,27 @@ paths = {
     13 : {5 : [13,12,11,6,4,5], 19: [13,12,17,18,19]}
 }
 
-def set_path(destination):
-    global current_node
-    return paths[current_node][destination]
+def set_path():
+    print(foo)
+    return paths[foo.current_node][foo.destination]
     
 
 def turn_direction(current_direction, current_path, current_node):
     
     ##get available moves
-    moves = moves(current_path[current_node])
+    moves = moves(current_path[foo.current_node])
 
     ##based on next node, find direction needed
     for i in moves:
-        if moves[i] == current_path[current_node + 1]:
+        if moves[i] == current_path[foo.current_node + 1]:
             next_direction = i
             break
     
     ##return turn direction
-    return next_direction, turn_logic[current_direction][next_direction]
+    return next_direction, turn_logic[foo.current_direction][next_direction]
 
     
     
     
+
+

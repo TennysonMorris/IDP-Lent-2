@@ -1,4 +1,6 @@
 import pathfinding as pf
+from time import sleep
+import settings as foo
 
 def line_follower(lineSensorLeft, lineSensorRight):
     #Veer controlled by slowing down the wheel on the outside of the veer.
@@ -18,11 +20,10 @@ def detect_junction(leftJuncDetector, rightJuncDetector):
     #if junction detected
     if leftJuncDetector.value() == 1 or rightJuncDetector.value() == 1:
         
-        global current_direction, current_path, current_node
         #update current node
-        current_node +=1
+        foo.current_node +=1
         #update current and turn direction
-        current_direction, turning  = pf.turn_direction(current_direction, current_path, current_node)
+        foo.current_direction, turning  = pf.turn_direction(current_direction, current_path, current_node)
 
         #execute turn 
         return True, turning
@@ -39,7 +40,24 @@ def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
     while leftLineFollower.value() == 0 or rightLineFollower.value() == 0:
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
+    
+    t = 0
+    while t < 1:
+        if leftLineFollower.value() == 0:
+            rightWheel.fwd(50)
+        else:
+            rightWheel.fwd(100)
             
+        if rightLineFollower.value() == 0:
+            leftWheel.fwd(50)
+        else:
+            leftWheel.fwd(100)
+        t += 0.05
+        sleep(0.05)
+        
     return
+        
+
+
 
 
