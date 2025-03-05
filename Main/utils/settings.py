@@ -1,5 +1,8 @@
-def init():
-    global current_node, current_direction
-    current_node = 0
-    current_direction = 'N'
+class Robot:
     
+    def __init__(self, path, destination):
+        self.current_node = 0
+        self.current_direction = "N"
+        self.current_path = [path]
+        self.destination = destination
+

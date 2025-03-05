@@ -16,19 +16,19 @@ def line_follower(lineSensorLeft, lineSensorRight):
         
     return (leftSpeed, rightSpeed)
 
-def detect_junction(leftJuncDetector, rightJuncDetector):
+def detect_junction(leftJuncDetector, rightJuncDetector, robot):
     #if junction detected
     if leftJuncDetector.value() == 1 or rightJuncDetector.value() == 1:
         
         #update current node
-        foo.current_node +=1
+        robot.current_node +=1
         #update current and turn direction
-        foo.current_direction, turning  = pf.turn_direction(current_direction, current_path, current_node)
+        robot.current_direction, turning  = pf.turn_direction(robot)
 
         #execute turn 
-        return True, turning
+        return True, turning, robot
         
-    return False, "Straight"
+    return False, "Straight", robot
 
 def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
 

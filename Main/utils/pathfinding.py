@@ -50,24 +50,23 @@ paths = {
     13 : {5 : [13,12,11,6,4,5], 19: [13,12,17,18,19]}
 }
 
-def set_path():
-    print(foo)
-    return paths[foo.current_node][foo.destination]
+def set_path(current_node, destination):
+    return paths[current_node][destination]
     
 
-def turn_direction(current_direction, current_path, current_node):
+def turn_direction(robot):
     
     ##get available moves
-    moves = moves(current_path[foo.current_node])
+    moves = moves(current_path[robot.current_node])
 
     ##based on next node, find direction needed
     for i in moves:
-        if moves[i] == current_path[foo.current_node + 1]:
+        if moves[i] == current_path[robot.current_node + 1]:
             next_direction = i
             break
     
     ##return turn direction
-    return next_direction, turn_logic[foo.current_direction][next_direction]
+    return next_direction, turn_logic[current_direction][next_direction], robot
 
     
     
