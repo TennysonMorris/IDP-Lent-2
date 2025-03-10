@@ -4,6 +4,8 @@ from time import sleep
 from lib.motor import Motor
 import lib.moving as mv
 import lib.pathfinding as pf
+import lib.collection as clt
+
 #Set pins for each wheel
 leftWheel = Motor(5,4)
 rightWheel = Motor(6,7)
@@ -16,15 +18,14 @@ juncSensorLeft = Pin(20, Pin.IN, Pin.PULL_UP)
 
 #initialize initial node, path, direction
 destination = 3
-current_path = pf.set_path(0,destination) #hard coded to first pickup
-robot = Robot(current_path, destination)
+path = pf.set_path(0, destination) #hard coded to first pickup
+robot = Robot(path, destination)
 
 while True:
-        
     #Check whether it is necessary to turn
-    if mv.detect_junction(juncSensorLeft, juncSensorRight, robot)[0] is True: #function updates current direction
-        turnDirection = mv.detect_junction[1]
-        print("turnign", turnDirection)
+    junction = mv.detect_junction(juncSensorLeft, juncSensorRight, robot)
+    if junction[0] is True: #function updates current direction
+        turnDirection = junction[1]
         #Conditional to determine which wheel should be driven forwards to turn in the desired direction.
         if turnDirection == "Left":
             mv.turn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
@@ -36,14 +37,38 @@ while True:
         leftWheel.fwd(leftSpeed)
         rightWheel.fwd(rightSpeed)
     
-    #what to do when destination reached
-    if current_path[robot.current_node] == destination:
+    #What to do when destination reached
+    if robot.path[-1] in (3, 10, 15, 13):
+        #Robot has reached pickup location
+        if robot.current_path[robot.current_node + 1] == robot.path[-1]:
+            destination = clt.collect_block() #Use colour detetction to determine new location and set new path.
+            new_path = pf.set_path(robot.current_path[current_node], destination)
+            robot.change_path(new_path)
+            while juncSensorLeft.value() == 0 or junSensorRight.value() == 0: #Reverse out of pickup point until node reached.
+                leftSpeed, rightSpeed = clt.reverse_out(lineSensorLeft, lineSensorRight)
+                leftWheel.rvrs(leftSpeed)
+                rightWheel.rvrs(rightSpeed)
+    
+    #Robot has returned to start
+    elif robot.path[-1] == 0 and robot.current_path[robot.current_node] == robot.path[-1]:
+        leftWheel.kill()
+        rightWheel.kill()
         break
-#         #at depot
-#         if destination == 5 or destination == 19:
-#             #box dropoff
-#         elif destination == 0:
-#             #???
-#         else:
-#             #boxpickup
+    
+    #Robot is in a depot
+    elif robot.current_path[robot.current_node] == robot.path[-1]:
+        robot = clt.drop_off(robot) #drop off box
+        leftWheel.rvrs(100)
+        rightWheel.rvrs(100)
+        sleep(1)
+        leftWheel.kill()
+        rightWheel.kill()
+        
+        #Do a u-turn, depending on location turn in different direction to avoid hitting walls.
+        if robot.current_path[robot.current_node] == 5:
+            mv.uturn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
+        elif robot.current_path[robot.current_node] == 19:
+            mv.uturn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight)
+        
+        
 

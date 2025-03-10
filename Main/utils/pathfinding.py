@@ -1,12 +1,10 @@
 ## create map as dictionary
-from settings import Robot
-
 map = {
     0 : {"N" : 1},
     1 : {"W" : 2, "E" : 18},
-    2 : {"N" : 3, "W" : 4, "E" : 1},
+    2 : {"N" : 3, "E" : 1, "W" : 4},
     3 : {"S" : 2},
-    4 : {"N" : 6, "S" : 5, "E" : 2},
+    4 : {"N" : 6, "S" : 5},
     5 : {"N" : 4},
     6 : {"N" : 7, "S" : 4, "E" : 11},
     7 : {"E" : 8, "S" : 6},
@@ -57,16 +55,21 @@ def set_path(current_node, destination):
 def turn_direction(robot):
     
     ##get available moves
-    moves = moves(robot.current_path[robot.current_node])
+    path = robot.current_path
+    
+    move = moves(robot.current_path[robot.current_node])
 
     ##based on next node, find direction needed
-    for i in moves:
-        if moves[i] == robot.current_path[robot.current_node + 1]:
-            next_direction = i
+    for i in move:
+        try:
+            if move[i] == path[robot.current_node + 1]:
+                next_direction = i
+                break
+        except IndexError:
             break
     
     ##return turn direction
-    return next_direction, turn_logic[robot.current_direction][next_direction]
+    return next_direction, turn_logic[robot.current_direction][next_direction], robot
 
     
     
