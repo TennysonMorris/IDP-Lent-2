@@ -1,4 +1,5 @@
 import pathfinding as pf
+import time
 from time import sleep
 import settings as foo
 
@@ -40,8 +41,9 @@ def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
     
-    t = 0
-    while t < 1:
+    start = time.time()
+    print("straight")
+    while time.time() - start < 1:
         if leftLineFollower.value() == 0:
             insideWheel.fwd(50)
         else:
@@ -51,8 +53,6 @@ def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
             outsideWheel.fwd(50)
         else:
             outsideWheel.fwd(100)
-        t += 0.05
-        sleep(0.05)
         
     return
         

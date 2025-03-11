@@ -41,8 +41,9 @@ class TCS34725:
         self._active = False
         self.integration_time(2.4)
         sensor_id = self.sensor_id()
-#         if sensor_id not in ([0x44, 0x10]):
-#             raise RuntimeError("wrong sensor id 0x{:x}".format(sensor_id))
+        print("Sensor_id: 0x{:02X}".format(sensor_id))
+        if (sensor_id) not in (0x44, 0x10):
+            raise RuntimeError("wrong sensor id 0x{:x}".format(sensor_id))
 
     def _register8(self, register, value=None):
         register |= _COMMAND_BIT
@@ -166,5 +167,4 @@ def html_hex(data):
     return "{0:02x}{1:02x}{2:02x}".format(int(r),
                              int(g),
                              int(b))
-
 

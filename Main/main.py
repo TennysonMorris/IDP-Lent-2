@@ -15,21 +15,27 @@ lineSensorRight = Pin(17, Pin.IN, Pin.PULL_UP)
 lineSensorLeft = Pin(16, Pin.IN, Pin.PULL_UP)
 juncSensorRight = Pin(19, Pin.IN, Pin.PULL_UP)
 juncSensorLeft = Pin(20, Pin.IN, Pin.PULL_UP)
-
+led = Pin(0, Pin.OUT)
 #initialize initial node, path, direction
-destination = 3
+destination = 13
 path = pf.set_path(0, destination) #hard coded to first pickup
 robot = Robot(path, destination)
 
+led.value(0)
+sleep(1)
+led.value(1)
 while True:
     #Check whether it is necessary to turn
     junction = mv.detect_junction(juncSensorLeft, juncSensorRight, robot)
     if junction[0] is True: #function updates current direction
+        print("junction reached")
         turnDirection = junction[1]
         #Conditional to determine which wheel should be driven forwards to turn in the desired direction.
         if turnDirection == "Left":
+            print("turn left")
             mv.turn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
         elif turnDirection == "Right":
+            print("turn right")
             mv.turn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight)
     #line follower
     else:
@@ -38,9 +44,10 @@ while True:
         rightWheel.fwd(rightSpeed)
     
     #What to do when destination reached
-    if robot.path[-1] in (3, 10, 15, 13):
+    if robot.current_path[-1] in (3, 10, 15, 13):
         #Robot has reached pickup location
-        if robot.current_path[robot.current_node + 1] == robot.path[-1]:
+        if robot.current_path[robot.current_node + 1] == robot.current_path[-1]:
+            
             destination = clt.collect_block() #Use colour detetction to determine new location and set new path.
             new_path = pf.set_path(robot.current_path[current_node], destination)
             robot.change_path(new_path)
@@ -57,7 +64,7 @@ while True:
     
     #Robot is in a depot
     elif robot.current_path[robot.current_node] == robot.path[-1]:
-        robot = clt.drop_off(robot) #drop off box
+        #robot = clt.drop_off(robot) #drop off box
         leftWheel.rvrs(100)
         rightWheel.rvrs(100)
         sleep(1)
