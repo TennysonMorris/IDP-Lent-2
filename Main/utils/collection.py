@@ -1,5 +1,8 @@
 from pathfinding import set_path
 from time import sleep
+from vl53l0x import VL53L0X
+from machine import Pin, PWM, I2C
+
 
 def activate_servo(servo, movement):
     # Set Duty Cycle for Different Angles
@@ -26,8 +29,8 @@ def detect_colour(colour_sensor): #detect color update path
     else:
         return 5
 
-def collect_block(colour_sensor, servo, tof, leftWheel, rightWheel):#collect block, update destination and path, reverse out 
-    tof.ping()
+def collect_block(colour_sensor, servo, leftWheel, rightWheel):#collect block, update destination and path, reverse out 
+    tof = VL53L0X(I2C(1, sda = Pin(14), scl = Pin(11)))
     while True:
         dist = tof.ping() - 25
         print(dist)

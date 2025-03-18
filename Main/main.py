@@ -24,7 +24,6 @@ servo_pin = machine.Pin(13)
 servo = machine.PWM(servo_pin)
 
 #button, colour sensor and tof
-tof = VL53L0X(I2C(1, sda = Pin(14), scl = Pin(11)))
 colour_sensor = TCS34725(I2C(0, scl = Pin(9), sda = Pin(8), freq = 50000))
 button = Pin(21, Pin.IN, Pin.PULL_UP)
 #initialize initial node, path, direction
@@ -64,7 +63,7 @@ while True:
         #Robot has reached pickup location
         if robot.current_path[robot.current_node + 1] == robot.current_path[-1]:
             
-            destination = clt.collect_block(colour_sensor, servo, tof, leftWheel, rightWheel) #Use colour detetction to determine new location and set new path.
+            destination = clt.collect_block(colour_sensor, servo, leftWheel, rightWheel) #Use colour detetction to determine new location and set new path.
             clt.activate_servo(servo, "Lift")
             new_path = pf.set_path(robot.current_path[robot.current_node], destination)
             robot.change_path(new_path)
