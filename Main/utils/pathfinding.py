@@ -1,5 +1,6 @@
 ## create map as dictionary
 map = {
+    -1 : {"N" : 0},
     0 : {"N" : 1},
     1 : {"W" : 2, "E" : 18},
     2 : {"N" : 3, "E" : 1, "W" : 4},
@@ -37,15 +38,15 @@ def moves(node):
 ##shortest paths between key points
 paths = {
     #start to pickup points
-    0 : {3 : [0,1,2,3], 10 : [0,1,2,4,6,11,9,10], 15 : [0,1,18,17,16,14,15], 13 : [0, 1,18,17,12,13]},
+    -1 : {3 : [-1,0,1,2,3], 10 : [-1,0,1,2,4,6,11,9,10], 15 : [-1,0,1,18,17,16,14,15], 13 : [-1,0, 1,18,17,12,13]},
     #depots to pickup points and start
     5 : {3 : [5,4,2,3], 10 : [5,4,6,11,9,10], 15 : [5,4,6,7,8,14,15], 13 : [5,4,6,11,12,13], 0 : [5,4,2,1,0]},
     19 : {3 : [19,18,1,2,3], 10 : [19,18,17,12,11,9,10], 15 : [19,18,17,16,14,15], 13 : [19,18,17,12,13], 0 :[19,18,1,0]},
     #pick up points to depot
-    3 : {5 : [3,2,4,5], 19: [3,2,1,18,19]},
-    10 : {5 : [10,9,11,6,4,5], 19: [10,9,11,12,17,18,19]},
-    15 : {5 : [15,14,8,7,6,4,5], 19: [15,14,16,17,18,19]},
-    13 : {5 : [13,12,11,6,4,5], 19: [13,12,17,18,19]}
+    2 : {5 : [3,2,4,5], 19: [3,2,1,18,19]},
+    9 : {5 : [10,9,11,6,4,5], 19: [10,9,11,12,17,18,19]},
+    14 : {5 : [15,14,8,7,6,4,5], 19: [15,14,16,17,18,19]},
+    12 : {5 : [13,12,11,6,4,5], 19: [13,12,17,18,19]}
 }
 
 def set_path(current_node, destination):
@@ -58,7 +59,6 @@ def turn_direction(robot):
     path = robot.current_path
     
     move = moves(robot.current_path[robot.current_node])
-
     ##based on next node, find direction needed
     for i in move:
         try:
@@ -66,13 +66,14 @@ def turn_direction(robot):
                 next_direction = i
                 break
         except IndexError:
+            next_direction = robot.current_direction
             break
-    
     ##return turn direction
     return next_direction, turn_logic[robot.current_direction][next_direction], robot
 
     
     
     
+
 
 

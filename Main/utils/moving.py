@@ -25,9 +25,10 @@ def detect_junction(leftJuncDetector, rightJuncDetector, robot):
         #update current and turn direction
         new_direction, turning, robot  = pf.turn_direction(robot)
         robot.change_direction(new_direction)
-        #execute turn 
+        #execute turn
+        print(robot.current_path[robot.current_node])
         return True, turning, robot
-        
+    
     return False, "Straight", robot
 
 def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
@@ -41,23 +42,11 @@ def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
     
-    start = time.time()
-    print("straight")
-    while time.time() - start < 1:
-        if leftLineFollower.value() == 0:
-            insideWheel.fwd(50)
-        else:
-            insideWheel.fwd(100)
-            
-        if rightLineFollower.value() == 0:
-            outsideWheel.fwd(50)
-        else:
-            outsideWheel.fwd(100)
         
     return
         
 
-def uturn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
+def uturn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower, robot):
 
     #turn off original line
     while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
@@ -67,5 +56,13 @@ def uturn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
     while leftLineFollower.value() == 0 or rightLineFollower.value() == 0:
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
+    
+    robot.current_direction = "N"
+    
+    return robot
 
+
+def reverse(lineSensorLeft, lineSensorRight):
+    #Veer controlled by slowing down the wheel on the outside of the veer.
+    return (100, 100)
 
