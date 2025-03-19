@@ -36,23 +36,26 @@ led.value(0)
 while button.value() == 0:
     continue
 
-led.value(1)
 while True:
+    if robot.current_path[robot.current_node] != -1:
+        led.value(1)
     #Check whether it is necessary to turn
     junction = mv.detect_junction(juncSensorLeft, juncSensorRight, robot)
     if junction[0] is True: #function updates current direction
         turnDirection = junction[1]
+        print(robot.current_path[robot.current_node])
         #Conditional to determine which wheel should be driven forwards to turn in the desired direction.
         if turnDirection == "Left":
             mv.turn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
         elif turnDirection == "Right":
             mv.turn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight)
-        start = time()
         if robot.current_node != len(robot.current_path) - 1:
+            start = time()
             while time() - start < 1:
                 leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
                 leftWheel.fwd(leftSpeed)
                 rightWheel.fwd(rightSpeed)
+                
     #line follower
     else:
         leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
@@ -63,12 +66,10 @@ while True:
     if robot.current_path[-1] in (3, 10, 15, 13):
         #Robot has reached pickup location
         if robot.current_path[robot.current_node + 1] == robot.current_path[-1]:
-            
             destination = clt.collect_block(colour_sensor, servo, leftWheel, rightWheel) #Use colour detetction to determine new location and set new path.
             clt.activate_servo(servo, "Lift")
             new_path = pf.set_path(robot.current_path[robot.current_node], destination)
             robot.change_path(new_path)
-            print(robot.current_direction, robot.current_path)
             while juncSensorLeft.value() == 0 or juncSensorRight.value() == 0: #Reverse out of pickup point until node reached.
                 leftSpeed, rightSpeed = mv.reverse(lineSensorLeft, lineSensorRight)
                 leftWheel.rvrs(leftSpeed)
@@ -97,6 +98,4 @@ while True:
         elif robot.current_path[robot.current_node] == 19:
             robot = mv.uturn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight, robot)
         
-        
-
-
+    

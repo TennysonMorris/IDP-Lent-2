@@ -26,7 +26,6 @@ def detect_junction(leftJuncDetector, rightJuncDetector, robot):
         new_direction, turning, robot  = pf.turn_direction(robot)
         robot.change_direction(new_direction)
         #execute turn
-        print(robot.current_path[robot.current_node])
         return True, turning, robot
     
     return False, "Straight", robot
@@ -34,7 +33,7 @@ def detect_junction(leftJuncDetector, rightJuncDetector, robot):
 def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
 
     #turn off original line
-    while leftLineFollower.value() == 1 and rightLineFollower.value() == 1:
+    while leftLineFollower.value() == 1 or rightLineFollower.value() == 1:
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
     #turn until new line reached
@@ -42,7 +41,6 @@ def turn(insideWheel, outsideWheel, leftLineFollower, rightLineFollower):
         outsideWheel.fwd(50)
         insideWheel.rvrs(50)
     
-        
     return
         
 

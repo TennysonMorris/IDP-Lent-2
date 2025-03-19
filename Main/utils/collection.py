@@ -20,32 +20,28 @@ def activate_servo(servo, movement):
 
 def detect_colour(colour_sensor): #detect color update path
     colour_info = colour_sensor.read('rgb')
-    if colour_info[0] > 7:
+    if colour_info[0] > 1:
         return 5
-    elif colour_info[1] > 7:
-        return 19
-    elif colour_info[2] > 7:
-        return 19
     else:
-        return 5
+        return 19
 
 def collect_block(colour_sensor, servo, leftWheel, rightWheel):#collect block, update destination and path, reverse out 
     tof = VL53L0X(I2C(1, sda = Pin(14), scl = Pin(11)))
     while True:
         dist = tof.ping() - 25
-        print(dist)
         if dist > 50:
             leftWheel.fwd(100)
             rightWheel.fwd(100)
         elif dist < 50:
             leftWheel.kill()
             rightWheel.kill()
-            destination = detect_colour(colour_sensor)
             activate_servo(servo, "lift")
             break
         prev_dist = dist
         sleep(0.1)
     
+    
+    destination = detect_colour(colour_sensor)
     return destination
 
         
