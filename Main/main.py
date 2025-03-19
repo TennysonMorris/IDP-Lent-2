@@ -48,10 +48,11 @@ while True:
         elif turnDirection == "Right":
             mv.turn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight)
         start = time()
-        while time() - start < 0.5:
-            leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
-            leftWheel.fwd(leftSpeed)
-            rightWheel.fwd(rightSpeed)
+        if robot.current_node != len(robot.current_path) - 1:
+            while time() - start < 1:
+                leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
+                leftWheel.fwd(leftSpeed)
+                rightWheel.fwd(rightSpeed)
     #line follower
     else:
         leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
