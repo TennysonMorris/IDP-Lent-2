@@ -20,7 +20,6 @@ def activate_servo(servo, movement):
 
 def detect_colour(colour_sensor): #detect color update path
     colour_info = colour_sensor.read('rgb')
-    print(colour_info)
     if colour_info[0] > 1 and colour_info[2] < 5:
         return 5
     else:

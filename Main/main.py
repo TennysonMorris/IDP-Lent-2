@@ -43,7 +43,6 @@ while True:
     junction = mv.detect_junction(juncSensorLeft, juncSensorRight, robot)
     if junction[0] is True: #function updates current direction
         turnDirection = junction[1]
-        print(robot.current_path[robot.current_node], robot.current_path)
         #Conditional to determine which wheel should be driven forwards to turn in the desired direction.
         if turnDirection == "Left":
             mv.turn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
