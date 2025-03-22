@@ -50,7 +50,7 @@ paths = {
 }
 
 def set_path(current_node, destination):
-    return paths[current_node][destination]
+    return paths[current_node][destination] 
     
 
 def turn_direction(robot):

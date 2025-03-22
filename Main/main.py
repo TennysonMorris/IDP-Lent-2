@@ -30,14 +30,14 @@ button = Pin(21, Pin.IN, Pin.PULL_UP)
 destination = 3
 path = pf.set_path(-1, destination) #hard coded to first pickup
 robot = Robot(path)
-clt.activate_servo(servo,"drop")
+clt.activate_servo(servo,"drop") #default drop servo
 
 led.value(0)
 while button.value() == 0:
     continue
 
 while True:
-    if robot.current_path[robot.current_node] != -1:
+    if robot.current_path[robot.current_node] != -1: #turn off light when robot at start 
         led.value(1)
     #Check whether it is necessary to turn
     junction = mv.detect_junction(juncSensorLeft, juncSensorRight, robot)
@@ -48,6 +48,7 @@ while True:
             mv.turn(leftWheel, rightWheel, lineSensorLeft, lineSensorRight)
         elif turnDirection == "Right":
             mv.turn(rightWheel, leftWheel, lineSensorLeft, lineSensorRight)
+        #moves slightly forward to move past junction
         time = 0
         while time < 0.8:
             leftSpeed, rightSpeed = mv.line_follower(lineSensorLeft, lineSensorRight)
